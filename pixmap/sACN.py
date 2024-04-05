@@ -8,11 +8,11 @@ class sACN():
         self.sender.start()
         self.pix_channels = pix_channels
         self.pix_per_universe = 512 // pix_channels
-        self.num_universes = (num_pixels * pix_channels) // self.pix_per_universe
+        self.num_universes = (num_pixels + self.pix_per_universe - 1) // self.pix_per_universe
 
-        for i in range(self.num_universes):
-            self.sender.activate_output(i)
-            output = self.sender[i]
+        for uni in range(self.num_universes):
+            self.sender.activate_output(uni + 1)
+            output = self.sender[uni + 1]
             if output is not None:
                 output.destination = "10.1.2.2"
         
@@ -22,10 +22,10 @@ class sACN():
             self.dmx_data.append([0] * 512)
 
         for uni in range(self.num_universes):
-            self.sender[uni].dmx_data = self.dmx_data[uni]
+            self.sender[uni + 1].dmx_data = self.dmx_data[uni]
 
     def highlight_pixel(self, pixel):
-        
+
         # Calculate the universe and channel for the current pixel
         universe = (pixel // self.pix_per_universe) + 1
         channel = (pixel % self.pix_per_universe) * self.pix_channels
@@ -44,4 +44,8 @@ class sACN():
 
     def send(self):
         for i in range(self.num_universes):
-            self.sender[i].dmx_data = self.dmx_data[i]
+            self.sender[i + 1].dmx_data = self.dmx_data[i]
+
+    def stop(self):
+        self.sender.stop()
+        self.sender = None
