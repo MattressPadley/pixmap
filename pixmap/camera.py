@@ -1,20 +1,37 @@
 import cv2
-import time
+import asyncio
 
 class Camera():
     def __init__(self):
         self.cap = cv2.VideoCapture(0)
         self.brightest_pixel = None
-        self.width = 1280
-        self.height = 720
+        self.frame = None
+        self.running = False
 
     def get_brightest_pixel(self):
         return self.brightest_pixel
+    
+    def start(self):
+        self.running = True
+        asyncio.create_task(self.run())
 
-    def run(self):
-        while True:
+    def stop(self):
+        self.running = False
+    
+    def get_frame(self):
+        return self.frame
+
+    async def run(self):
+        if not self.cap.isOpened():
+            print("Failed to open camera.")
+            return
+    
+        while self.running:
             # Read the current frame from the webcam
             ret, frame = self.cap.read()
+            if not ret:
+                print("Failed to read frame.")
+                break
 
             # Convert the frame to grayscale
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -46,15 +63,5 @@ class Camera():
                 2,
             )
 
-            # Display the frame in a window named "Webcam" with adjustable size
-            cv2.namedWindow("Webcam", cv2.WINDOW_NORMAL)
-            cv2.resizeWindow("Webcam", self.width, self.height)
-            cv2.imshow("Webcam", frame)
-
-            # Break the loop if the 'q' key is pressed
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                break
-
-        # Release the VideoCapture object and close the window
-        self.cap.release()
-        cv2.destroyAllWindows()
+            self.frame = frame
+            await asyncio.sleep(0.01)
