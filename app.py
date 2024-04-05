@@ -1,5 +1,4 @@
 import cv2
-import time
 import asyncio
 from pixmap import Camera
 from pixmap import sACN
