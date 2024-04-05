@@ -4,18 +4,21 @@ from pixmap import Camera
 from pixmap import sACN
 
 cam = Camera()
-# acn = sACN(100)
+acn = sACN(100)
 
 async def main():
     cam.start()
+    pixel = 0
 
-
-    while True:    
+    while True:
         frame = cam.get_frame()
         if frame is not None:
             cv2.namedWindow("Webcam", cv2.WINDOW_NORMAL)
             cv2.resizeWindow("Webcam", 1280, 720)
             cv2.imshow("Webcam", frame)
+
+            acn.highlight_pixel(pixel)
+            pixel += 1
 
             bright = cam.get_brightest_pixel()
             if bright is not None:
@@ -25,6 +28,11 @@ async def main():
 
         # Break the loop if the 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+
+        elif pixel >= 100:
+            pixel = 0
+            acn.clear_pixels()
             break
 
     # Release the VideoCapture object and close the window
