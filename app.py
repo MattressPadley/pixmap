@@ -22,7 +22,7 @@ async def main():
             if bright is not None:
                 print(bright)
         
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0.01)
 
         # Break the loop if the 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord("q"):
