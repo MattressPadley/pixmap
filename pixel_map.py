@@ -5,7 +5,7 @@ from pixmap import sACN
 import csv
 
 
-num_pixels = 300
+num_pixels = 100
 cam = Camera()
 acn = sACN(num_pixels)
 
@@ -29,7 +29,7 @@ async def main():
             if bright is not None:
                 pix_map.append(bright)
 
-        await asyncio.sleep(.01)
+        await asyncio.sleep(0.5q)
         acn.clear_pixels()
 
         # Break the loop if the 'q' key is pressed

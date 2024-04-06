@@ -14,7 +14,7 @@ class sACN():
             self.sender.activate_output(uni + 1)
             output = self.sender[uni + 1]
             if output is not None:
-                output.destination = "10.1.2.2"
+                output.destination = "10.1.4.190"
         
         self.dmx_data = []
 
