@@ -3,6 +3,10 @@ import asyncio
 from cv2.typing import MatLike
 
 class Camera():
+    """
+    Represents a camera object that captures frames from a webcam and performs image processing operations.
+    """
+
     def __init__(self):
         self.cap = cv2.VideoCapture(0)
         self.brightest_pixel = None
@@ -10,19 +14,40 @@ class Camera():
         self.running = False
 
     def get_brightest_pixel(self) -> tuple:
+        """
+        Returns the coordinates of the brightest pixel in the captured frame.
+
+        Returns:
+            tuple: The coordinates of the brightest pixel in the format (x, y).
+        """
         return self.brightest_pixel
     
     def start(self) -> None:
+        """
+        Starts capturing frames from the webcam and processing them.
+        """
         self.running = True
         asyncio.create_task(self.run())
 
     def stop(self) -> None:
+        """
+        Stops capturing frames from the webcam.
+        """
         self.running = False
     
     def get_frame(self) -> MatLike:
+        """
+        Returns the current captured frame.
+
+        Returns:
+            MatLike: The current captured frame.
+        """
         return self.frame
 
     async def run(self) -> None:
+        """
+        Runs the main loop for capturing frames and performing image processing operations.
+        """
         if not self.cap.isOpened():
             print("Failed to open camera.")
             return
