@@ -29,7 +29,7 @@ async def main():
             if bright is not None:
                 pix_map.append(bright)
 
-        await asyncio.sleep(0.5q)
+        await asyncio.sleep(0.5)
         acn.clear_pixels()
 
         # Break the loop if the 'q' key is pressed
@@ -49,7 +49,9 @@ async def main():
     # Write pix_map to a CSV file
     with open('pix_map.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerows(pix_map)
+        writer.writerow(['x', 'y'])  # Write column headers
+        for pixel in pix_map:
+            writer.writerow(pixel)
     
 
 if __name__ == "__main__":
