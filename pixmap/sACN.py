@@ -46,7 +46,7 @@ class sACN():
         for uni in range(self.num_universes):
             self.sender[uni + 1].dmx_data = self.dmx_data[uni]
 
-    def highlight_pixel(self, pixel) -> None:
+    def highlight_pixel(self, pixel: int) -> None:
         """
         Highlights a specific pixel by setting its RGB values to maximum.
 
@@ -67,7 +67,7 @@ class sACN():
         self.dmx_data[universe - 1][channel + 2] = 255
         self.send()
 
-    def clear_pixels(self,) -> None:
+    def clear_pixels(self) -> None:
         """
         Clears all the pixels by setting their RGB values to zero.
 
