@@ -11,7 +11,7 @@ acn = sACN(num_pixels)
 
 async def main():
     cam.start()
-    pixel = 0
+    pixel = 1
     pix_map = []
 
     while True:
@@ -23,13 +23,12 @@ async def main():
 
             acn.highlight_pixel(pixel)
             pixel += 1
-    
+            await asyncio.sleep(0.5) # wait to be sure the signal has reached the pixel
 
             bright = cam.get_brightest_pixel()
             if bright is not None:
                 pix_map.append(bright)
 
-        await asyncio.sleep(0.5)
         acn.clear_pixels()
 
         # Break the loop if the 'q' key is pressed

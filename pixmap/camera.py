@@ -1,5 +1,6 @@
 import cv2
 import asyncio
+from cv2.typing import MatLike
 
 class Camera():
     def __init__(self):
@@ -8,20 +9,20 @@ class Camera():
         self.frame = None
         self.running = False
 
-    def get_brightest_pixel(self):
+    def get_brightest_pixel(self) -> tuple:
         return self.brightest_pixel
     
-    def start(self):
+    def start(self) -> None:
         self.running = True
         asyncio.create_task(self.run())
 
-    def stop(self):
+    def stop(self) -> None:
         self.running = False
     
-    def get_frame(self):
+    def get_frame(self) -> MatLike:
         return self.frame
 
-    async def run(self):
+    async def run(self) -> None:
         if not self.cap.isOpened():
             print("Failed to open camera.")
             return
