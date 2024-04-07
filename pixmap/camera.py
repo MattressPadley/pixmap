@@ -64,7 +64,7 @@ class Camera():
 
             # Update the current frame
             self.frame = frame
-            await asyncio.sleep(0.01)
+            await asyncio.sleep(0.03)
 
     def bright_crosshair(self, frame: MatLike) -> None:
         """
