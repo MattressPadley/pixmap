@@ -10,15 +10,6 @@ cam = Camera()
 acn = sACN(num_pixels)
 
 async def main():
-    """
-    Main function that captures frames from a webcam, highlights pixels, and saves the pixel map to a CSV file.
-
-    This function starts the camera, captures frames, displays the frames in a window, highlights pixels, and saves the
-    coordinates of the brightest pixels to a CSV file.
-
-    Returns:
-        None
-    """
     # Start the camera
     cam.start()
 
