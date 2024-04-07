@@ -46,7 +46,8 @@ class Camera():
 
     async def run(self) -> None:
         """
-        Runs the main loop for capturing frames and performing image processing operations.
+        Runs the main loop for capturing frames and performing image processing
+        operations.
         """
         if not self.cap.isOpened():
             print("Failed to open camera.")
