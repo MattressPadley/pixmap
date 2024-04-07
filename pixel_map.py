@@ -31,6 +31,16 @@ async def main():
             # Display the frame in the window
             cv2.imshow("Webcam", frame)
 
+            # Get the coordinates of the brightest pixel in the frame
+            bright = cam.get_brightest_pixel()
+
+            if bright is not None:
+                # Add the coordinates to the pixel map
+                pix_map.append(bright)
+
+            # Clear all pixels
+            acn.clear_pixels()
+
             # Highlight the current pixel
             acn.highlight_pixel(pixel)
 
@@ -40,20 +50,11 @@ async def main():
             # Wait for a short period to ensure the signal has reached the pixel
             await asyncio.sleep(0.5)
 
-            # Get the coordinates of the brightest pixel in the frame
-            bright = cam.get_brightest_pixel()
-
-            if bright is not None:
-                # Add the coordinates to the pixel map
-                pix_map.append(bright)
-
-        # Clear all pixels
-        acn.clear_pixels()
 
         # Break the loop if the 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
-    
+
         # Reset the pixel counter if it exceeds the number of pixels
         elif pixel >= num_pixels:
             pixel = 0
@@ -71,7 +72,7 @@ async def main():
         writer.writerow(['x', 'y'])  # Write column headers
         for pixel in pix_map:
             writer.writerow(pixel)
-    
+
 
 if __name__ == "__main__":
     asyncio.run(main())
