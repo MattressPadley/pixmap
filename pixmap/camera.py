@@ -59,35 +59,46 @@ class Camera():
                 print("Failed to read frame.")
                 break
 
-            # Convert the frame to grayscale
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            # Draw a crosshair at the brightest pixel in the frame
+            self.bright_crosshair(frame)
 
-            # Apply a Gaussian blur to the grayscale frame
-            blurred = cv2.GaussianBlur(gray, (9, 9), 0)
-
-            # Find the brightest pixel in the blurred image
-            min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(blurred)
-
-            # Update the brightest pixel
-            self.brightest_pixel = max_loc
-
-            # Draw two lines that intersect at the brightest pixel
-            cv2.line(frame, (max_loc[0], 0), (max_loc[0], frame.shape[0]), (0, 255, 0), 2)
-            cv2.line(frame, (0, max_loc[1]), (frame.shape[1], max_loc[1]), (0, 255, 0), 2)
-
-            # Calculate the text position at the intersection of the lines
-            text_position = (max_loc[0] + 10, max_loc[1] + 30)
-
-            # Display the coordinates of the brightest pixel on the frame
-            cv2.putText(
-                frame,
-                str(max_loc),
-                text_position,
-                cv2.FONT_HERSHEY_SIMPLEX,
-                1,
-                (0, 255, 0),
-                2,
-            )
-
+            # Update the current frame
             self.frame = frame
             await asyncio.sleep(0.01)
+
+    def bright_crosshair(self, frame: MatLike) -> None:
+        """
+        Draws a crosshair at the brightest pixel in the frame.
+
+        Args:
+            frame (MatLike): The frame to draw the crosshair on.
+        """
+        # Convert the frame to grayscale
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        # Apply a Gaussian blur to the grayscale frame
+        blurred = cv2.GaussianBlur(gray, (9, 9), 0)
+
+        # Find the brightest pixel in the blurred image
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(blurred)
+
+        # Update the brightest pixel
+        self.brightest_pixel = max_loc
+
+        # Draw two lines that intersect at the brightest pixel
+        cv2.line(frame, (max_loc[0], 0), (max_loc[0], frame.shape[0]), (0, 255, 0), 2)
+        cv2.line(frame, (0, max_loc[1]), (frame.shape[1], max_loc[1]), (0, 255, 0), 2)
+
+        # Calculate the text position at the intersection of the lines
+        text_position = (max_loc[0] + 10, max_loc[1] + 30)
+
+        # Display the coordinates of the brightest pixel on the frame
+        cv2.putText(
+            frame,
+            str(max_loc),
+            text_position,
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (0, 255, 0),
+            2,
+        )
