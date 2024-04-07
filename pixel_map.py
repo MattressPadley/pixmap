@@ -10,31 +10,60 @@ cam = Camera()
 acn = sACN(num_pixels)
 
 async def main():
+    """
+    Main function that captures frames from a webcam, highlights pixels, and saves the pixel map to a CSV file.
+
+    This function starts the camera, captures frames, displays the frames in a window, highlights pixels, and saves the
+    coordinates of the brightest pixels to a CSV file.
+
+    Returns:
+        None
+    """
+    # Start the camera
     cam.start()
-    pixel = 1
+
+    # Initialize the pixel counter
+    pixel = 1 
+
+    # Initialize the pixel map list
     pix_map = []
 
     while True:
+        # Get the current frame from the camera
         frame = cam.get_frame()
+
         if frame is not None:
+            # Create a named window and resize it
             cv2.namedWindow("Webcam", cv2.WINDOW_NORMAL)
             cv2.resizeWindow("Webcam", 1280, 720)
+
+            # Display the frame in the window
             cv2.imshow("Webcam", frame)
 
+            # Highlight the current pixel
             acn.highlight_pixel(pixel)
-            pixel += 1
-            await asyncio.sleep(0.5) # wait to be sure the signal has reached the pixel
 
+            # Increment the pixel counter
+            pixel += 1
+
+            # Wait for a short period to ensure the signal has reached the pixel
+            await asyncio.sleep(0.5)
+
+            # Get the coordinates of the brightest pixel in the frame
             bright = cam.get_brightest_pixel()
+
             if bright is not None:
+                # Add the coordinates to the pixel map
                 pix_map.append(bright)
 
+        # Clear all pixels
         acn.clear_pixels()
 
         # Break the loop if the 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
     
+        # Reset the pixel counter if it exceeds the number of pixels
         elif pixel >= num_pixels:
             pixel = 0
             acn.clear_pixels()
@@ -45,7 +74,7 @@ async def main():
     acn.stop()
     cv2.destroyAllWindows()
 
-    # Write pix_map to a CSV file
+    # Write the pixel map to a CSV file
     with open('pix_map.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['x', 'y'])  # Write column headers
