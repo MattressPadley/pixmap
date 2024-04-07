@@ -640,6 +640,17 @@ files = [
 ]
 
 [[package]]
+name = "qasync"
+version = "0.27.1"
+description = "Python library for using asyncio in Qt-based applications"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "qasync-0.27.1-py3-none-any.whl", hash = "sha256:5d57335723bc7d9b328dadd8cb2ed7978640e4bf2da184889ce50ee3ad2602c7"},
+    {file = "qasync-0.27.1.tar.gz", hash = "sha256:8dc768fd1ee5de1044c7c305eccf2d39d24d87803ea71189d4024fb475f4985f"},
+]
+
+[[package]]
 name = "sacn"
 version = "1.9.0"
 description = "sACN / E1.31 module for easy handling of DMX data over ethernet"
@@ -675,4 +686,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2b5eb2b83c10003e872cc1a8f149353efd434ca180f67e0247dd06be38fe2f09"
+content-hash = "9fae378596a18e624a5f9bda815a00aaeb603b802eccb33f388dd0c8d2be0849"

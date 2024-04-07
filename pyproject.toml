@@ -12,6 +12,7 @@ sacn = "^1.9.0"
 pandas = "^2.2.1"
 matplotlib = "^3.8.4"
 pyqt5 = "^5.15.10"
+qasync = "^0.27.1"
 
 
 [build-system]
