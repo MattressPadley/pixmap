@@ -8,7 +8,7 @@ class Camera():
     """
 
     def __init__(self):
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(1)
         self.brightest_pixel = None
         self.frame = None
         self.running = False
@@ -64,7 +64,7 @@ class Camera():
 
             # Update the current frame
             self.frame = frame
-            await asyncio.sleep(0.01)
+            await asyncio.sleep(0.1)
 
     def bright_crosshair(self, frame: MatLike) -> None:
         """

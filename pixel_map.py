@@ -47,10 +47,6 @@ async def main():
             # Increment the pixel counter
             pixel += 1
 
-            # Wait for a short period to ensure the signal has reached the pixel
-            await asyncio.sleep(0.5)
-
-
         # Break the loop if the 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
@@ -60,6 +56,9 @@ async def main():
             pixel = 0
             acn.clear_pixels()
             break
+
+        # Wait for a short period to ensure the signal has reached the pixel
+        await asyncio.sleep(0.1)
 
     # Release the VideoCapture object and close the window
     cam.stop()
