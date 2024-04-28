@@ -53,15 +53,15 @@ def main():
     Returns:
         None
     """
-    
+
     dmx_map = {}  # Single dictionary to store all the DMX maps
     pixel_id = 1  # Start from pixel ID 1
+    num_pixels = int(input("Enter the number of pixels: "))
+    channels_per_pixel = int(input("Enter the number of channels per pixel: "))
 
     while True:
-        num_pixels = int(input("Enter the number of pixels: "))
-        channels_per_pixel = int(input("Enter the number of channels per pixel: "))
-        start_address = int(input("Enter the start address: "))
         start_universe = int(input("Enter the start universe: "))
+        start_address = int(input("Enter the start address: "))
 
         strip_map, pixel_id = patch_strip(pixel_id, num_pixels, channels_per_pixel, start_address, start_universe)
         dmx_map.update(strip_map)  # Update the main DMX map with the current strip map
@@ -70,9 +70,8 @@ def main():
         if choice.lower() != "y":
             break
 
-    with open("dmx_map.json", "w") as f:
+    with open("patch.json", "w") as f:
         json.dump(dmx_map, f)  # Write the main DMX map to the file
-
 
 
 if __name__ == "__main__":

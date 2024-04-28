@@ -2,12 +2,14 @@ import cv2
 import asyncio
 from pixmap import Camera
 from pixmap import sACN
-import csv
+import json
 
+with open("patch.json", "r") as file:
+    patch = json.load(file)
 
-num_pixels = 100
+num_pixels = len(patch)
 cam = Camera()
-acn = sACN(num_pixels)
+acn = sACN()
 
 async def main():
     # Start the camera
@@ -16,8 +18,8 @@ async def main():
     # Initialize the pixel counter
     pixel = 1 
 
-    # Initialize the pixel map list
-    pix_map = []
+    # Initialize the pixel map dictionary
+    pix_map = {}
 
     while True:
         # Get the current frame from the camera
@@ -36,7 +38,7 @@ async def main():
 
             if bright is not None:
                 # Add the coordinates to the pixel map
-                pix_map.append(bright)
+                pix_map[pixel] = bright
 
             # Clear all pixels
             acn.clear_pixels()
@@ -65,12 +67,9 @@ async def main():
     acn.stop()
     cv2.destroyAllWindows()
 
-    # Write the pixel map to a CSV file
-    with open('pix_map.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(['x', 'y'])  # Write column headers
-        for pixel in pix_map:
-            writer.writerow(pixel)
+    # Write the pixel map to a JSON file
+    with open('pix_map.json', 'w') as file:
+        json.dump(pix_map, file)
 
 
 if __name__ == "__main__":

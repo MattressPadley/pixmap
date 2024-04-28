@@ -1,4 +1,5 @@
 import sacn
+import json
 
 
 class sACN():
@@ -24,18 +25,23 @@ class sACN():
 
     """
 
-    def __init__(self, num_pixels, pix_channels=3):
-        self.sender = sacn.sACNsender()
+    def __init__(self):
+        self.sender = sacn.sACNsender('0.0.0.0')
         self.sender.start()
-        self.pix_channels = pix_channels
-        self.pix_per_universe = 512 // pix_channels
-        self.num_universes = (num_pixels + self.pix_per_universe - 1) // self.pix_per_universe
+        with open("patch.json", "r") as file:
+            self.patch = json.load(file)
 
-        for uni in range(self.num_universes):
-            self.sender.activate_output(uni + 1)
-            output = self.sender[uni + 1]
+        # mkae tuple of univeres used in the patch
+        universes = set()
+        for pixel in self.patch:
+            universes.add(self.patch[pixel]['universe'])
+        
+        # activate output for each universe
+        for uni in universes:
+            self.sender.activate_output(uni)
+            output = self.sender[uni]
             if output is not None:
-                output.destination = "10.1.4.190"
+                output.multicast = True
         
         self.dmx_data = []
 
@@ -56,14 +62,11 @@ class sACN():
             None
         """
 
-        # Calculate the universe and channel for the current pixel
-        universe = (pixel // self.pix_per_universe) + 1
-        channel = (pixel % self.pix_per_universe) * self.pix_channels
-
-        # Set the RGB values for the current pixel
-        self.dmx_data[universe - 1][channel] = 255
-        self.dmx_data[universe - 1][channel + 1] = 255
-        self.dmx_data[universe - 1][channel + 2] = 255
+        universe = self.patch[str(pixel)]['universe']
+        channels = self.patch[str(pixel)]['channels']
+        self.dmx_data[universe - 1][channels[0]] = 255
+        self.dmx_data[universe - 1][channels[1]] = 255
+        self.dmx_data[universe - 1][channels[2]] = 255
         self.send()
 
     def clear_pixels(self) -> None:

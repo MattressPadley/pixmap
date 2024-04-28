@@ -161,3 +161,4 @@ cython_debug/
 pixel_map.py
 pix_map.csv
 dmx_map.json
+patch.json
