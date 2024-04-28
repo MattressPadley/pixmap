@@ -47,7 +47,7 @@ class sACN():
             self.dmx_data[uni] = ([0] * 512)
             self.sender[uni].dmx_data = self.dmx_data[uni]
 
-    def highlight_pixel(self, pixel: int) -> None:
+    def highlight_pixel(self, pixel_id: int) -> None:
         """
         Highlights a specific pixel by setting its RGB values to maximum.
 
@@ -58,8 +58,8 @@ class sACN():
             None
         """
 
-        universe = self.patch[str(pixel)]['universe']
-        channels = self.patch[str(pixel)]['channels']
+        universe = self.patch[str(pixel_id)]['universe']
+        channels = self.patch[str(pixel_id)]['channels']
 
         for chan in channels:
             self.dmx_data[universe][chan] = 255

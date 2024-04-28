@@ -16,7 +16,7 @@ async def main():
     cam.start()
 
     # Initialize the pixel counter
-    pixel = 1 
+    pixel_id = 1 
 
     # Initialize the pixel map dictionary
     pix_map = {}
@@ -30,7 +30,7 @@ async def main():
     for i in range(num_pixels):
 
         # Highlight the current pixel
-        acn.highlight_pixel(pixel)
+        acn.highlight_pixel(pixel_id)
 
         # Wait for a short period to ensure the signal has reached the pixel
         await asyncio.sleep(0.1)
@@ -48,14 +48,14 @@ async def main():
 
             if bright is not None:
                 # Add the coordinates to the pixel map
-                pix_map[pixel] = bright
-                print(f"Pixel {pixel}: {bright}")
+                pix_map[pixel_id] = bright
+                print(f"Pixel {pixel_id}: {bright}")
 
             # Clear all pixels
             acn.clear_pixels()
 
             # Increment the pixel counter
-            pixel += 1
+            pixel_id += 1
 
         await asyncio.sleep(0.1)
 
