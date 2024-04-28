@@ -158,8 +158,5 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
-pixel_map.py
-pix_map.csv
-dmx_map.json
 patch.json
 pix_map.json

@@ -24,6 +24,8 @@ async def main():
     # Create a named window and resize it
     cv2.namedWindow("Webcam", cv2.WINDOW_NORMAL)
     cv2.resizeWindow("Webcam", 1280, 720)
+    
+    input('Press enter to begin mapping')
 
     for i in range(num_pixels):
 
