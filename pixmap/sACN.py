@@ -64,9 +64,9 @@ class sACN():
 
         universe = self.patch[str(pixel)]['universe']
         channels = self.patch[str(pixel)]['channels']
-        self.dmx_data[universe - 1][channels[0]] = 255
-        self.dmx_data[universe - 1][channels[1]] = 255
-        self.dmx_data[universe - 1][channels[2]] = 255
+
+        for i in range(channels):
+            self.dmx_data[universe - 1][channels[i + 1]] = 255
         self.send()
 
     def clear_pixels(self) -> None:
