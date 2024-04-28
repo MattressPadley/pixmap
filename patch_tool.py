@@ -2,7 +2,7 @@ import json
 
 def patch_strip(pixel_id, num_pixels, channels_per_pixel, start_address, start_universe=1) -> tuple[dict,int]:
     """
-    Generates a DMX patch map for a strip of pixels.
+    Generates a DMX patch for a strip of pixels.
 
     Args:
         pixel_id (int): The starting pixel ID.
@@ -38,7 +38,7 @@ def patch_strip(pixel_id, num_pixels, channels_per_pixel, start_address, start_u
 
 def main():
     """
-    Main function to interactively create and store DMX maps.
+    Main function to interactively create and store DMX Patches.
 
     This function prompts the user to enter the number of pixels, number of channels per pixel,
     start address, and start universe for each strip. It then calls the `patch_strip` function
@@ -60,10 +60,10 @@ def main():
     channels_per_pixel = int(input("Enter the number of channels per pixel: "))
 
     while True:
-        start_universe = int(input("Enter the start universe: "))
-        start_address = int(input("Enter the start address: "))
+        start_address = input("Enter the start address: ")
+        start_universe, start_channel = map(int, start_address.split("."))
 
-        strip_map, pixel_id = patch_strip(pixel_id, num_pixels, channels_per_pixel, start_address, start_universe)
+        strip_map, pixel_id = patch_strip(pixel_id, num_pixels, channels_per_pixel, start_channel, start_universe)
         dmx_map.update(strip_map)  # Update the main DMX map with the current strip map
 
         choice = input("Do you want to add more strips? (y/n): ")
