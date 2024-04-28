@@ -28,28 +28,24 @@ class sACN():
     def __init__(self):
         self.sender = sacn.sACNsender('0.0.0.0')
         self.sender.start()
+        self.dmx_data = {}
+
         with open("patch.json", "r") as file:
             self.patch = json.load(file)
 
         # mkae tuple of univeres used in the patch
-        universes = set()
+        self.universes = set()
         for pixel in self.patch:
-            universes.add(self.patch[pixel]['universe'])
-        
+            self.universes.add(self.patch[pixel]['universe'])
+
         # activate output for each universe
-        for uni in universes:
+        for uni in self.universes:
             self.sender.activate_output(uni)
             output = self.sender[uni]
             if output is not None:
                 output.multicast = True
-        
-        self.dmx_data = []
-
-        for _ in range(self.num_universes):
-            self.dmx_data.append([0] * 512)
-
-        for uni in range(self.num_universes):
-            self.sender[uni + 1].dmx_data = self.dmx_data[uni]
+            self.dmx_data[uni] = ([0] * 512)
+            self.sender[uni].dmx_data = self.dmx_data[uni]
 
     def highlight_pixel(self, pixel: int) -> None:
         """
@@ -65,8 +61,8 @@ class sACN():
         universe = self.patch[str(pixel)]['universe']
         channels = self.patch[str(pixel)]['channels']
 
-        for i in range(channels):
-            self.dmx_data[universe - 1][channels[i + 1]] = 255
+        for chan in channels:
+            self.dmx_data[universe][chan] = 255
         self.send()
 
     def clear_pixels(self) -> None:
@@ -76,9 +72,9 @@ class sACN():
         Returns:
             None
         """
-        for i in range(self.num_universes):
+        for uni in self.universes:
             for j in range(512):
-                self.dmx_data[i][j] = 0
+                self.dmx_data[uni][j] = 0
         self.send()
 
     def send(self) -> None:
@@ -88,8 +84,8 @@ class sACN():
         Returns:
             None
         """
-        for i in range(self.num_universes):
-            self.sender[i + 1].dmx_data = self.dmx_data[i]
+        for uni in self.universes:
+            self.sender[uni].dmx_data = self.dmx_data[uni]
 
     def stop(self) -> None:
         """
