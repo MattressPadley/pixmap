@@ -8,7 +8,7 @@ class Camera():
     """
 
     def __init__(self):
-        self.cap = cv2.VideoCapture(1)
+        self.cap = cv2.VideoCapture(0)
         self.brightest_pixel = None
         self.frame = None
         self.running = False

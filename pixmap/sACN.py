@@ -26,7 +26,7 @@ class sACN():
     """
 
     def __init__(self):
-        self.sender = sacn.sACNsender('0.0.0.0')
+        self.sender = sacn.sACNsender('192.168.0.69')
         self.sender.start()
         self.dmx_data = {}
 
@@ -62,7 +62,7 @@ class sACN():
         channels = self.patch[str(pixel_id)]['channels']
 
         for chan in channels:
-            self.dmx_data[universe][chan] = 255
+            self.dmx_data[universe][chan - 1] = 255
         self.send()
 
     def clear_pixels(self) -> None:

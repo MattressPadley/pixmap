@@ -3,6 +3,7 @@ import asyncio
 from pixmap import Camera
 from pixmap import sACN
 import json
+import datetime
 
 with open("patch.json", "r") as file:
     patch = json.load(file)
@@ -25,6 +26,7 @@ async def main():
     cv2.namedWindow("Webcam", cv2.WINDOW_NORMAL)
     cv2.resizeWindow("Webcam", 1280, 720)
     
+    side_num = int(input("Enter the number of the side of the object you're scanning: "))
     input('Press enter to begin mapping')
 
     for i in range(num_pixels):
@@ -33,7 +35,7 @@ async def main():
         acn.highlight_pixel(pixel_id)
 
         # Wait for a short period to ensure the signal has reached the pixel
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0.2)
 
         # Get the current frame from the camera
         frame = cam.get_frame()
@@ -57,7 +59,7 @@ async def main():
             # Increment the pixel counter
             pixel_id += 1
 
-        await asyncio.sleep(0.1)
+        #await asyncio.sleep(0.01)
 
         # Break the loop if the 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord("q"):
@@ -68,8 +70,11 @@ async def main():
     acn.stop()
     cv2.destroyAllWindows()
 
-    # Write the pixel map to a JSON file
-    with open('pix_map.json', 'w') as file:
+    # Generate a unique filename based on current datetime and side_num
+    filename = f"scans/{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_side{side_num}.json"
+
+    # Write the pixel map to a JSON file with the generated filename
+    with open(filename, 'w') as file:
         json.dump(pix_map, file)
 
 

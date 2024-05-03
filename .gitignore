@@ -160,3 +160,6 @@ cython_debug/
 #.idea/
 patch.json
 pix_map.json
+scans
+led_px.xml
+modified_led_px.xml
