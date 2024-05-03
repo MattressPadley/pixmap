@@ -160,5 +160,4 @@ cython_debug/
 #.idea/
 patch.json
 pix_map.json
-scans
-maps
+
