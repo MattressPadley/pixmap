@@ -46,12 +46,30 @@ async def main():
             cv2.imshow("Webcam", frame)
 
             # Get the coordinates of the brightest pixel in the frame
-            bright = cam.get_brightest_pixel()
+            bright, max = cam.get_brightest_pixel()
+
+            if side_num == 1:
+                dim1 = "y"
+                dim2 = "x"
+            elif side_num == 2:
+                dim1 = "y"
+                dim2 = "z"
+            elif side_num == 3:
+                dim1 = "y"
+                dim2 = "x"
+            elif side_num == 4:
+                dim1 = "y"
+                dim2 = "z"
 
             if bright is not None:
                 # Add the coordinates to the pixel map
-                pix_map[pixel_id] = bright
-                print(f"Pixel {pixel_id}: {bright}")
+                pixel = {
+                    dim1: bright[0],
+                    dim2: bright[1],
+                    "brightness": max
+                }
+                pix_map[pixel_id] = pixel
+                print(f"Pixel {pixel_id}: {bright} - Brightness: {max}")
 
             # Clear all pixels
             acn.clear_pixels()

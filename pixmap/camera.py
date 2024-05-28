@@ -10,6 +10,7 @@ class Camera():
     def __init__(self):
         self.cap = cv2.VideoCapture(0)
         self.brightest_pixel = None
+        self.max_val = None
         self.frame = None
         self.running = False
 
@@ -20,7 +21,7 @@ class Camera():
         Returns:
             tuple: The coordinates of the brightest pixel in the format (x, y).
         """
-        return self.brightest_pixel
+        return self.brightest_pixel, self.max_val
     
     def start(self) -> None:
         """
@@ -84,6 +85,7 @@ class Camera():
 
         # Update the brightest pixel
         self.brightest_pixel = max_loc
+        self.max_val = max_val
 
         # Draw two lines that intersect at the brightest pixel
         cv2.line(frame, (max_loc[0], 0), (max_loc[0], frame.shape[0]), (0, 255, 0), 2)

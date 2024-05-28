@@ -4,10 +4,10 @@ import time
 
 acn = sACN()
 
-with open("scans/20240502163608_side2.json", "r") as file:
+with open("final_map.json", "r") as file:
     pixels = json.load(file)
 
-    sorted_pixels = sorted(pixels.items(), key=lambda x: x[1][0])
+sorted_pixels = sorted(pixels.items(), key=lambda x: x[1]["x"])
 
 while True:
     for pixel in sorted_pixels:
